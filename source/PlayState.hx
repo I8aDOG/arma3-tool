@@ -2233,10 +2233,10 @@ class PlayState extends MusicBeatState
 		FlxG.sound.play(Paths.sound('staticSound','clown'));
 		spookyText = new FlxText((x == -1111111111111 ? FlxG.random.float(dad.x + 40,dad.x + 120) : x), (y == -1111111111111 ? FlxG.random.float(dad.y + 200, dad.y + 300) : y));
 		spookyText.setFormat("Impact", 128, FlxColor.RED);
-		if (curStage == 'nevedaSpook')
+		if (curStage == 'nevadaSpook')
 		{
-			spookyText.size = 200;
-			spookyText.x += 250;
+			//spookyText.size = 200;
+			spookyText.y -= 450;
 		}
 		spookyText.bold = true;
 		spookyText.text = text;

@@ -254,6 +254,8 @@ class Character extends FlxSprite
 			
 			case 'bf':
 				var tex = Paths.getSparrowAtlas('BOYFRIEND');
+				Paths.getSparrowAtlas('signDeath','clown');
+
 				frames = tex;
 				animation.addByPrefix('idle', 'BF idle dance', 24, false);
 				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
@@ -296,6 +298,8 @@ class Character extends FlxSprite
 			
 			case 'bf-hell':
 				var tex = Paths.getSparrowAtlas('hellclwn/BF/BF_3rd_phase','clown');
+				Paths.getSparrowAtlas('signDeath','clown');
+
 				frames = tex;
 				animation.addByPrefix('idle', 'BF idle dance', 24, false);
 				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
@@ -361,7 +365,7 @@ class Character extends FlxSprite
 				
 				playAnim('firstDeath');
 
-				addOffset('firstDeath');
+				addOffset('firstDeath', 262, 0);
 				addOffset('deathLoop');
 				addOffset('deathConfirm', 0, 40);
 
