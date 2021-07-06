@@ -53,6 +53,7 @@ class Note extends FlxSprite
 		strumTime = strumTime < 0 ? 0 : strumTime;
 
 		burning = _noteData > 7;
+
 		//if(!isSustainNote) { burning = Std.random(3) == 1; } //Set random notes to burning
 
 		//No held fire notes :[ (Part 1)
@@ -65,6 +66,69 @@ class Note extends FlxSprite
 		
 		noteData = _noteData % 4;
 
+		updateSprite();
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		//No held fire notes :[ (Part 2)
+		if(isSustainNote && prevNote.burning) { 
+			this.kill(); 
+		}
+
+		if (mustPress)
+		{
+			// The * 0.5 is so that it's easier to hit them too late, instead of too early
+			if (!burning)
+			{
+				if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
+					&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
+					canBeHit = true;
+				else
+					canBeHit = false;
+			}
+			else
+			{
+				if (PlayState.curStage == 'auditorHell') // these though, REALLY hard to hit.
+				{
+					if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.3)
+						&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.2)) // also they're almost impossible to hit late!
+						canBeHit = true;
+					else
+						canBeHit = false;
+				}
+				else
+				{
+				// make burning notes a lot harder to accidently hit because they're weirdchamp!
+					if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.6)
+						&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.4)) // also they're almost impossible to hit late!
+						canBeHit = true;
+					else
+						canBeHit = false;
+				}
+			}
+			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset && !wasGoodHit)
+				tooLate = true;
+		}
+		else
+		{
+			canBeHit = false;
+
+			if (strumTime <= Conductor.songPosition)
+				wasGoodHit = true;
+		}
+
+		if (tooLate)
+		{
+			if (alpha > 0.3)
+				alpha = 0.3;
+		}
+	}
+
+	public function updateSprite()
+	{
 		var daStage:String = PlayState.curStage;
 
 		switch (daStage)
@@ -227,64 +291,6 @@ class Note extends FlxSprite
 				prevNote.updateHitbox();
 				// prevNote.setGraphicSize();
 			}
-		}
-	}
-
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-
-		//No held fire notes :[ (Part 2)
-		if(isSustainNote && prevNote.burning) { 
-			this.kill(); 
-		}
-
-		if (mustPress)
-		{
-			// The * 0.5 is so that it's easier to hit them too late, instead of too early
-			if (!burning)
-			{
-				if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
-					&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
-					canBeHit = true;
-				else
-					canBeHit = false;
-			}
-			else
-			{
-				if (PlayState.curStage == 'auditorHell') // these though, REALLY hard to hit.
-				{
-					if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.3)
-						&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.2)) // also they're almost impossible to hit late!
-						canBeHit = true;
-					else
-						canBeHit = false;
-				}
-				else
-				{
-				// make burning notes a lot harder to accidently hit because they're weirdchamp!
-					if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.6)
-						&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.4)) // also they're almost impossible to hit late!
-						canBeHit = true;
-					else
-						canBeHit = false;
-				}
-			}
-			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset && !wasGoodHit)
-				tooLate = true;
-		}
-		else
-		{
-			canBeHit = false;
-
-			if (strumTime <= Conductor.songPosition)
-				wasGoodHit = true;
-		}
-
-		if (tooLate)
-		{
-			if (alpha > 0.3)
-				alpha = 0.3;
 		}
 	}
 }
