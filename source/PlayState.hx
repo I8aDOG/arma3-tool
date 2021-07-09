@@ -2143,7 +2143,7 @@ class PlayState extends MusicBeatState
 			vocals.stop();
 			FlxG.sound.music.stop();
 
-			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, shouldBeDead));
 
 			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		}
@@ -2199,7 +2199,7 @@ class PlayState extends MusicBeatState
 		
 							//trace("DA ALT THO?: " + SONG.notes[Math.floor(curStep / 16)].altAnim);
 		
-							if (!(curBeat >= 532 && curBeat <= 536  && curSong.toLowerCase() == "expurgation")){
+							if ((!(curBeat >= 532 && curBeat <= 536)  && curSong.toLowerCase() == "expurgation") || curSong.toLowerCase() != "expurgation"){
 							switch (Math.abs(daNote.noteData))
 							{
 								case 2:
@@ -2321,6 +2321,7 @@ class PlayState extends MusicBeatState
 		
 		if (FlxG.save.data.cpuStrums)
 		{
+			var i:Int = 0;
 			cpuStrums.forEach(function(spr:FlxSprite)
 			{
 				if (spr.animation.finished)
@@ -2328,6 +2329,7 @@ class PlayState extends MusicBeatState
 					spr.animation.play('static');
 					spr.centerOffsets();
 				}
+				i += 1;
 			});
 		}
 
@@ -2807,7 +2809,7 @@ class PlayState extends MusicBeatState
 									// lol death
 									health = 0;
 									shouldBeDead = true;
-									FlxG.sound.play(Paths.sound('death','clown'));
+									//FlxG.sound.play(Paths.sound('death','clown'));
 								}
 								else
 								{

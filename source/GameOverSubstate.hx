@@ -14,10 +14,14 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	var stageSuffix:String = "";
 
-	public function new(x:Float, y:Float)
+	var instaKilled:Bool = false;
+
+	public function new(x:Float, y:Float, shouldBeDead:Bool)
 	{
 		var daStage = PlayState.curStage;
 		var daBf:String = 'signDeath';
+
+		instaKilled = shouldBeDead;
 
 		super();
 
@@ -38,7 +42,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		add(camFollow);
 
 		FlxG.sound.play(Paths.sound('BF_Deathsound','clown'));
-		FlxG.sound.play(Paths.sound('Micdrop','clown'));
+		//FlxG.sound.play(Paths.sound('Micdrop','clown'));
 		Conductor.changeBPM(200);
 
 		// FlxG.camera.followLerp = 1;
@@ -71,6 +75,11 @@ class GameOverSubstate extends MusicBeatSubstate
 			PlayState.loadRep = false;
 		}
 
+		if (bf.animation.curAnim.name == 'firstDeath')
+		{
+			trace(bf.animation.frameIndex);
+		}
+
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
 		{
 			FlxG.sound.playMusic(Paths.music('gameOver','clown'));
@@ -80,6 +89,17 @@ class GameOverSubstate extends MusicBeatSubstate
 		else if (bf.animation.curAnim.finished && bf.animation.curAnim.name != 'deathConfirm')
 		{
 			bf.playAnim('deathLoop', true);
+		}
+
+		if (bf.animation.curAnim.name == 'firstDeath' && !instaKilled && bf.animation.frameIndex >= 90 && !playedMic)
+		{
+			playedMic = true;
+			FlxG.sound.play(Paths.sound('Micdrop','clown'));
+		}
+		else if (bf.animation.curAnim.name == 'firstDeath' && instaKilled && bf.animation.frameIndex >= 74 && !playedMic)
+		{
+				playedMic = true;
+				FlxG.sound.play(Paths.sound('death','clown'));
 		}
 
 		if (FlxG.sound.music.playing)
