@@ -26,7 +26,10 @@ class GameOverSubstate extends MusicBeatSubstate
 		bf = new Boyfriend(x, y, daBf);
 		if (daStage == 'nevadaSpook')
 		{
-			bf.setGraphicSize(Std.int(bf.width * 0.3));
+			//I mean, if it ain't broke, don't fix it.
+			bf = new Boyfriend(-FlxG.width + (x * 3), -FlxG.height + (y * 3), daBf);
+			//bf.setGraphicSize(Std.int(bf.width * 0.3));
+			FlxG.camera.zoom = 0.3;
 			bf.antialiasing = true;
 		}
 		add(bf);

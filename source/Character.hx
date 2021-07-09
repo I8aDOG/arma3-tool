@@ -366,8 +366,8 @@ class Character extends FlxSprite
 				playAnim('firstDeath');
 
 				addOffset('firstDeath', 262, 0);
-				addOffset('deathLoop');
-				addOffset('deathConfirm', 0, 40);
+				addOffset('deathLoop', 0, 0);
+				addOffset('deathConfirm', 0, 47);
 
 				animation.pause();
 
