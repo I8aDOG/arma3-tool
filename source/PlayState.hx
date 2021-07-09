@@ -2787,7 +2787,7 @@ class PlayState extends MusicBeatState
 					goodNoteHit(possibleNotes[0]);
 				else if (possibleNotes.length > 0 && !dontCheck)
 				{
-					if (!FlxG.save.data.ghost)
+					if (!FlxG.save.data.ghost && dad.visible)
 					{
 						for (shit in 0...pressArray.length)
 							{ // if a direction is hit that shouldn't be
@@ -2845,7 +2845,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-				else if (!FlxG.save.data.ghost)
+				else if (!FlxG.save.data.ghost && dad.visible)
 					{
 						for (shit in 0...pressArray.length)
 							if (pressArray[shit])
